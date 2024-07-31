@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.prokofev.library.dao.BookDAO;
 import ru.prokofev.library.models.Book;
 
-import java.util.Arrays;
-
 @Controller
 @RequestMapping("/books")
 public class BooksController {
@@ -33,7 +31,25 @@ public class BooksController {
 
     @PostMapping()
     private String create(@ModelAttribute("book") Book book) {
-        bookDAO.create(book);
+        bookDAO.createBook(book);
         return "redirect:/books";
+    }
+
+    @GetMapping("/{id}/edit")
+    private String getEditPage(@PathVariable("id") int id, Model model) {
+        model.addAttribute("book", bookDAO.getBook(id));
+        return "books/edit";
+    }
+
+    @PatchMapping("/{id}")
+    private String edit(@ModelAttribute("book") Book book, @PathVariable("id") int id) {
+        bookDAO.updateBook(book);
+        return "redirect:/books/" + id;
+    }
+
+    @GetMapping("/{id}")
+    private String getBookPage(@PathVariable("id") int id, Model model) {
+        model.addAttribute("book", bookDAO.getBook(id));
+        return "books/book";
     }
 }
