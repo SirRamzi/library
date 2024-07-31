@@ -20,22 +20,22 @@ public class PersonDAO {
     }
 
     public void create(Person person) {
-        jdbcTemplate.update("INSERT INTO people(name, age) values(?, ?)", person.getName(), person.getAge());
+        jdbcTemplate.update("INSERT INTO person(name, age) values(?, ?)", person.getName(), person.getAge());
     }
 
     public List<Person> getPersonList() {
-        return jdbcTemplate.query("SELECT * FROM people", new BeanPropertyRowMapper<>(Person.class));
+        return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
     }
 
     public Person getPerson(int id) {
-        return jdbcTemplate.query("SELECT * FROM people WHERE id = ?", new BeanPropertyRowMapper<>(Person.class), id).stream().findAny().orElse(null);
+        return jdbcTemplate.query("SELECT * FROM person WHERE id = ?", new BeanPropertyRowMapper<>(Person.class), id).stream().findAny().orElse(null);
     }
 
     public void deletePerson(int id) {
-        jdbcTemplate.update("DELETE FROM people WHERE id = ?", id);
+        jdbcTemplate.update("DELETE FROM person WHERE id = ?", id);
     }
 
     public void updatePerson(int id, Person person) {
-        jdbcTemplate.update("UPDATE people SET name = ?, age = ? WHERE id = ?", person.getName(), person.getAge(), id);
+        jdbcTemplate.update("UPDATE person SET name = ?, age = ? WHERE id = ?", person.getName(), person.getAge(), id);
     }
 }
