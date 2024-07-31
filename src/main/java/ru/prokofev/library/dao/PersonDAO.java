@@ -6,7 +6,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.prokofev.library.models.Person;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -19,7 +18,7 @@ public class PersonDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void create(Person person) {
+    public void createPerson(Person person) {
         jdbcTemplate.update("INSERT INTO person(name, age) values(?, ?)", person.getName(), person.getAge());
     }
 

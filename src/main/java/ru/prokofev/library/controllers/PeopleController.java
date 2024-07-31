@@ -19,7 +19,7 @@ public class PeopleController {
     }
 
     @GetMapping()
-    private String getPeoplePage(Model model) {
+    private String getIndexPage(Model model) {
         model.addAttribute("personList", personDAO.getPersonList());
         return "people/index";
     }
@@ -31,7 +31,7 @@ public class PeopleController {
 
     @PostMapping()
     private String create(@ModelAttribute("person") Person person) {
-        personDAO.create(person);
+        personDAO.createPerson(person);
         return "redirect:/people";
     }
 
@@ -42,7 +42,7 @@ public class PeopleController {
     }
 
     @DeleteMapping("/{id}")
-    private String deletePerson(@PathVariable("id") int id) {
+    private String delete(@PathVariable("id") int id) {
         personDAO.deletePerson(id);
         return "redirect:/people";
     }
@@ -54,7 +54,7 @@ public class PeopleController {
     }
 
     @PatchMapping("/{id}")
-    private String editPerson(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
+    private String edit(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
         personDAO.updatePerson(id, person);
         return "redirect:/people/" + id;
     }
