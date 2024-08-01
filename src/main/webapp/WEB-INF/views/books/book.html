@@ -6,7 +6,27 @@
 </head>
 <body>
 <div th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></div>
-
+<div th:switch="${person}">
+    <form th:case="null" th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
+        Эта книга свободна. Кому назначить её?
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{author}">
+        <input type="hidden" th:field="*{year}">
+        <br/>
+        <label for="person">Выберите человека</label>
+        <select th:field="*{person_id}" id="person">
+            <option th:each="person : ${personList}" th:value="${person.getId()}" th:text="${person.getName()}"></option>
+        </select>
+        <input type="submit" value="Назначить книгу">
+    </form>
+    <form th:case="*" th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
+        <div th:text="'Книга сейчас у: ' + ${person.getName()}"></div>
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{author}">
+        <input type="hidden" th:field="*{year}">
+        <input type="submit" value="Освободить книгу">
+    </form>
+</div>
 <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}"><input type="submit" value="Редактировать"></form>
 <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}"><input type="submit" value="Удалить"></form>
 </body>
