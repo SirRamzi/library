@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import ru.prokofev.library.models.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -40,6 +41,10 @@ public class PersonDAO {
 
     public Person getPersonByBook(int id) {
         return jdbcTemplate.query("SELECT person.id, person.name, person.year FROM person JOIN book ON person.id = book.person_id WHERE book.id = ?", new BeanPropertyRowMapper<>(Person.class), id).stream().findAny().orElse(null);
+    }
+
+    public Optional<Person> getPersonByName(String name) {
+        return jdbcTemplate.query("SELECT * FROM person WHERE name = ? LIMIT 1", new BeanPropertyRowMapper<>(Person.class), name).stream().findAny();
     }
 
 }

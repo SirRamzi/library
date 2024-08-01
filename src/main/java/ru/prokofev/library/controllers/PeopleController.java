@@ -1,12 +1,15 @@
 package ru.prokofev.library.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.prokofev.library.dao.BookDAO;
 import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Person;
+import ru.prokofev.library.util.PersonValidator;
 
 @Controller
 @RequestMapping("/people")
@@ -14,11 +17,13 @@ public class PeopleController {
 
     private final PersonDAO personDAO;
     private final BookDAO bookDAO;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO, BookDAO bookDAO) {
+    public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
         this.personDAO = personDAO;
         this.bookDAO = bookDAO;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -33,7 +38,10 @@ public class PeopleController {
     }
 
     @PostMapping()
-    private String create(@ModelAttribute("person") Person person) {
+    private String create(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
+        if (bindingResult.hasErrors())
+            return "people/create";
         personDAO.createPerson(person);
         return "redirect:/people";
     }
@@ -54,11 +62,14 @@ public class PeopleController {
     @GetMapping("/{id}/edit")
     private String getEditPage(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.getPerson(id));
-        return "/people/edit";
+        return "people/edit";
     }
 
     @PatchMapping("/{id}")
-    private String edit(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
+    private String edit(@PathVariable("id") int id, @ModelAttribute("person") @Valid Person person, BindingResult bindingResult) {
+        personValidator.validate(person, bindingResult);
+        if (bindingResult.hasErrors())
+            return "people/edit";
         personDAO.updatePerson(id, person);
         return "redirect:/people/" + id;
     }

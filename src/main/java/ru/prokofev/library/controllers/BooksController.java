@@ -1,8 +1,10 @@
 package ru.prokofev.library.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.prokofev.library.dao.BookDAO;
 import ru.prokofev.library.dao.PersonDAO;
@@ -33,7 +35,9 @@ public class BooksController {
     }
 
     @PostMapping()
-    private String create(@ModelAttribute("book") Book book) {
+    private String create(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "books/create";
         bookDAO.createBook(book);
         return "redirect:/books";
     }
@@ -45,7 +49,9 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}")
-    private String edit(@ModelAttribute("book") Book book, @PathVariable("id") int id) {
+    private String edit(@PathVariable("id") int id, @ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "books/edit";
         bookDAO.updateBook(book);
         return "redirect:/books/" + id;
     }
@@ -56,5 +62,11 @@ public class BooksController {
         model.addAttribute("person", personDAO.getPersonByBook(id));
         model.addAttribute("personList", personDAO.getPersonList());
         return "books/book";
+    }
+
+    @DeleteMapping("/{id}")
+    private String deleteBook(@PathVariable("id") int id) {
+        bookDAO.deleteBook(id);
+        return "redirect:/books";
     }
 }

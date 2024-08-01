@@ -1,9 +1,16 @@
 package ru.prokofev.library.models;
 
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+
 public class Person {
 
+
     private int id;
+    @NotEmpty(message = "ФИО должо быть указано")
     private String name;
+    @Min(value = 1900, message = "Год рождения должен быть больше 1900 года")
     private int year;
 
 

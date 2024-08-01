@@ -1,10 +1,16 @@
 package ru.prokofev.library.models;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+
 public class Book {
 
     private int id;
+    @NotEmpty(message = "Название должно быть указано")
     private String name;
+    @NotEmpty(message = "Автор должен быть указано")
     private String author;
+    @Min(value = 1, message = "Год должен быть больше 0")
     private int year;
     private Integer person_id;
 
