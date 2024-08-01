@@ -19,7 +19,7 @@ public class PersonDAO {
     }
 
     public void createPerson(Person person) {
-        jdbcTemplate.update("INSERT INTO person(name, age) values(?, ?)", person.getName(), person.getAge());
+        jdbcTemplate.update("INSERT INTO person(name, year) values(?, ?)", person.getName(), person.getYear());
     }
 
     public List<Person> getPersonList() {
@@ -35,6 +35,11 @@ public class PersonDAO {
     }
 
     public void updatePerson(int id, Person person) {
-        jdbcTemplate.update("UPDATE person SET name = ?, age = ? WHERE id = ?", person.getName(), person.getAge(), id);
+        jdbcTemplate.update("UPDATE person SET name = ?, year = ? WHERE id = ?", person.getName(), person.getYear(), id);
     }
+
+    public Person getPersonByBook(int id) {
+        return jdbcTemplate.query("SELECT person.id, person.name, person.year FROM person JOIN book ON person.id = book.person_id WHERE book.id = ?", new BeanPropertyRowMapper<>(Person.class), id).stream().findAny().orElse(null);
+    }
+
 }

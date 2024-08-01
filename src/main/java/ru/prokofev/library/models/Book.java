@@ -6,6 +6,7 @@ public class Book {
     private String name;
     private String author;
     private int year;
+    private Integer person_id;
 
     public int getId() {
         return id;
@@ -37,5 +38,13 @@ public class Book {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public Integer getPerson_id() {
+        return person_id;
+    }
+
+    public void setPerson_id(Integer person_id) {
+        this.person_id = person_id;
     }
 }

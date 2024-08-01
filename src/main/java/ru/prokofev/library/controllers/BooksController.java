@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.prokofev.library.dao.BookDAO;
+import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Book;
 
 @Controller
@@ -12,10 +13,12 @@ import ru.prokofev.library.models.Book;
 public class BooksController {
 
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
 
     @Autowired
-    public BooksController(BookDAO bookDAO) {
+    public BooksController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
     @GetMapping()
@@ -50,6 +53,7 @@ public class BooksController {
     @GetMapping("/{id}")
     private String getBookPage(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.getBook(id));
+        model.addAttribute("person", personDAO.getPersonByBook(id));
         return "books/book";
     }
 }

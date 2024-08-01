@@ -4,7 +4,7 @@ public class Person {
 
     private int id;
     private String name;
-    private int age;
+    private int year;
 
 
     public String getName() {
@@ -15,12 +15,12 @@ public class Person {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public int getYear() {
+        return year;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public int getId() {
