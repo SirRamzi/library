@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.prokofev.library.dao.BookDAO;
 import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Book;
+import ru.prokofev.library.models.Person;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -59,8 +62,12 @@ public class BooksController {
     @GetMapping("/{id}")
     private String getBookPage(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.getBook(id));
-        model.addAttribute("person", personDAO.getPersonByBook(id));
-        model.addAttribute("personList", personDAO.getPersonList());
+        Optional<Person> bookOwner = personDAO.getPersonByBook(id);
+        if (bookOwner.isPresent()) {
+            model.addAttribute("person", bookOwner.get());
+        } else {
+            model.addAttribute("personList", personDAO.getPersonList());
+        }
         return "books/book";
     }
 

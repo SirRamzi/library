@@ -39,8 +39,8 @@ public class PersonDAO {
         jdbcTemplate.update("UPDATE person SET name = ?, year = ? WHERE id = ?", person.getName(), person.getYear(), id);
     }
 
-    public Person getPersonByBook(int id) {
-        return jdbcTemplate.query("SELECT person.id, person.name, person.year FROM person JOIN book ON person.id = book.person_id WHERE book.id = ?", new BeanPropertyRowMapper<>(Person.class), id).stream().findAny().orElse(null);
+    public Optional<Person> getPersonByBook(int id) {
+        return jdbcTemplate.query("SELECT person.id, person.name, person.year FROM person JOIN book ON person.id = book.person_id WHERE book.id = ?", new BeanPropertyRowMapper<>(Person.class), id).stream().findAny();
     }
 
     public Optional<Person> getPersonByName(String name) {
