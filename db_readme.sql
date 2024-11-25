@@ -9,5 +9,6 @@ CREATE TABLE book(
     name varchar(100) NOT NULL,
     author varchar(50) NOT NULL,
     year int CHECK(year > 0) NOT NULL,
+    date_last_capture timestamp,
     person_id int REFERENCES person(id) ON DELETE SET NULL
 );
