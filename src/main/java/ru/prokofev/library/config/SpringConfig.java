@@ -22,7 +22,7 @@ import java.util.Objects;
 @Configuration
 @EnableWebMvc
 @ComponentScan("ru.prokofev.library")
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:hibernate.properties")
 public class SpringConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;
@@ -63,10 +63,10 @@ public class SpringConfig implements WebMvcConfigurer {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("driver")));
-        dataSource.setUrl(environment.getProperty("url"));
-        dataSource.setUsername(environment.getProperty("user"));
-        dataSource.setPassword(environment.getProperty("password"));
+        dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("hibernate.driver_class")));
+        dataSource.setUrl(environment.getProperty("hibernate.connection.url"));
+        dataSource.setUsername(environment.getProperty("hibernate.connection.username"));
+        dataSource.setPassword(environment.getProperty("hibernate.connection.password"));
         return dataSource;
     }
 
