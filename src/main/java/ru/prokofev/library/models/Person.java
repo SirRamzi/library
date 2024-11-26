@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "person")
@@ -23,6 +24,9 @@ public class Person {
     @Column(name = "year")
     @Min(value = 1900, message = "Год рождения должен быть больше 1900 года")
     private int year;
+
+    @OneToMany(mappedBy = "person")
+    private List<Book> books;
 
     public String getName() {
         return name;
