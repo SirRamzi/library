@@ -24,10 +24,6 @@ public class Person {
     @Min(value = 1900, message = "Год рождения должен быть больше 1900 года")
     private int year;
 
-    @Column(name = "date_last_capture")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateLastCapture;
-
     public String getName() {
         return name;
     }
@@ -50,13 +46,5 @@ public class Person {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Date getDateLastCapture() {
-        return dateLastCapture;
-    }
-
-    public void setDateLastCapture(Date dateLastCapture) {
-        this.dateLastCapture = dateLastCapture;
     }
 }
