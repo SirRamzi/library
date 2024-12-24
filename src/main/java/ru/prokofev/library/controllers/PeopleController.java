@@ -16,15 +16,12 @@ import ru.prokofev.library.util.PersonValidator;
 @RequestMapping("/people")
 public class PeopleController {
 
-    private final PersonDAO personDAO;
     private final BookDAO bookDAO;
     private final PersonValidator personValidator;
-
     private final PersonService personService;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator, PersonService personService) {
-        this.personDAO = personDAO;
+    public PeopleController(BookDAO bookDAO, PersonValidator personValidator, PersonService personService) {
         this.bookDAO = bookDAO;
         this.personValidator = personValidator;
         this.personService = personService;
