@@ -10,6 +10,7 @@ import ru.prokofev.library.dao.BookDAO;
 import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Book;
 import ru.prokofev.library.models.Person;
+import ru.prokofev.library.services.BookService;
 
 import java.util.Optional;
 
@@ -19,16 +20,18 @@ public class BooksController {
 
     private final BookDAO bookDAO;
     private final PersonDAO personDAO;
+    private final BookService bookService;
 
     @Autowired
-    public BooksController(BookDAO bookDAO, PersonDAO personDAO) {
+    public BooksController(BookDAO bookDAO, PersonDAO personDAO, BookService bookService) {
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
+        this.bookService = bookService;
     }
 
     @GetMapping()
-    private String getIndexPage(Model model) {
-        model.addAttribute("bookList", bookDAO.getBookList());
+    private String getIndexPage(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "books_per_page", required = false) Integer booksPerPage, @RequestParam(value = "sort_by_year", required = false) boolean isSort, Model model) {
+        model.addAttribute("bookList", bookService.getBooks(page, booksPerPage, isSort));
         return "books/index";
     }
 
