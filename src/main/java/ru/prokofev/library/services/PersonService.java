@@ -22,8 +22,21 @@ public class PersonService {
         return personRepository.findAll();
     }
 
+    public Person getPersonById(int id) {
+        return personRepository.findById(id).orElse(null);
+    }
+
     public void savePerson(Person person) {
         personRepository.save(person);
+    }
+
+    public void updatePerson(int id, Person person) {
+        person.setId(id);
+        personRepository.save(person);
+    }
+
+    public void deletePersonById(int id) {
+        personRepository.deleteById(id);
     }
 
     public Optional<Person> getPersonByName(String name) {

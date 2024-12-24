@@ -52,20 +52,20 @@ public class PeopleController {
 
     @GetMapping("/{id}")
     private String getPersonPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.getPerson(id));
+        model.addAttribute("person", personService.getPersonById(id));
         model.addAttribute("bookList", bookDAO.getBookListByPerson(id));
         return "people/person";
     }
 
     @DeleteMapping("/{id}")
     private String delete(@PathVariable("id") int id) {
-        personDAO.deletePerson(id);
+        personService.deletePersonById(id);
         return "redirect:/people";
     }
 
     @GetMapping("/{id}/edit")
     private String getEditPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", personDAO.getPerson(id));
+        model.addAttribute("person", personService.getPersonById(id));
         return "people/edit";
     }
 
@@ -74,7 +74,7 @@ public class PeopleController {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors())
             return "people/edit";
-        personDAO.updatePerson(id, person);
+        personService.updatePerson(id, person);
         return "redirect:/people/" + id;
     }
 }
