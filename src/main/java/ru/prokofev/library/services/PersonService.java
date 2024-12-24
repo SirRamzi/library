@@ -6,6 +6,7 @@ import ru.prokofev.library.models.Person;
 import ru.prokofev.library.repositories.PersonRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -19,5 +20,13 @@ public class PersonService {
 
     public List<Person> getPeople() {
         return personRepository.findAll();
+    }
+
+    public void savePerson(Person person) {
+        personRepository.save(person);
+    }
+
+    public Optional<Person> getPersonByName(String name) {
+        return personRepository.findByName(name);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.prokofev.library.dao.BookDAO;
 import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Person;
+import ru.prokofev.library.services.PersonService;
 import ru.prokofev.library.util.PersonValidator;
 
 @Controller
@@ -19,16 +20,19 @@ public class PeopleController {
     private final BookDAO bookDAO;
     private final PersonValidator personValidator;
 
+    private final PersonService personService;
+
     @Autowired
-    public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator) {
+    public PeopleController(PersonDAO personDAO, BookDAO bookDAO, PersonValidator personValidator, PersonService personService) {
         this.personDAO = personDAO;
         this.bookDAO = bookDAO;
         this.personValidator = personValidator;
+        this.personService = personService;
     }
 
     @GetMapping()
     private String getIndexPage(Model model) {
-        model.addAttribute("personList", personDAO.getPersonList());
+        model.addAttribute("personList", personService.getPeople());
         return "people/index";
     }
 
@@ -42,7 +46,7 @@ public class PeopleController {
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors())
             return "people/create";
-        personDAO.createPerson(person);
+        personService.savePerson(person);
         return "redirect:/people";
     }
 

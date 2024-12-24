@@ -7,15 +7,18 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Person;
+import ru.prokofev.library.services.PersonService;
 
 @Component
 public class PersonValidator implements Validator {
 
     private final PersonDAO personDAO;
+    private final PersonService personService;
 
     @Autowired
-    public PersonValidator(PersonDAO personDAO) {
+    public PersonValidator(PersonDAO personDAO, PersonService personService) {
         this.personDAO = personDAO;
+        this.personService = personService;
     }
 
     @Override
@@ -26,7 +29,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
-        if (personDAO.getPersonByName(person.getName()).isPresent()) {
+        if (personService.getPersonByName(person.getName()).isPresent()) {
             errors.rejectValue("name", "", "ФИО должно быть уникальным");
         }
     }
