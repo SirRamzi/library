@@ -35,6 +35,10 @@ public class BookService {
         }
     }
 
+    public List<Book> getBooksByNameStartingWith(String name) {
+        return name != null ? bookRepository.findByNameStartingWith(name) : null;
+    }
+
     public List<Book> getBooksByPersonId(int id) {
         return bookRepository.findByPersonId(id);
     }

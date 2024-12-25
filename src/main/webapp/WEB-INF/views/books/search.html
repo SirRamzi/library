@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+    <form th:action="@{/books/search}">
+        <label for="name">Введите поисковый запрос: </label><input type="text" th:name="name" id="name">
+        <input type="submit" value="Искать!">
+    </form>
+    <br>
+    <div th:if="${books != null}" th:switch="${books.size()}">
+        <div th:case="0">
+            Книг не найдено
+        </div>
+        <div th:case="*">
+            <div th:each="book:${books}">
+                <div th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></div>
+                <div th:if="${book.getPerson() == null}">Книга свободна</div>
+                <div th:if="${book.getPerson() != null}" th:text="'Книга сейчас у: ' + ${book.getPerson().getName()}"></div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

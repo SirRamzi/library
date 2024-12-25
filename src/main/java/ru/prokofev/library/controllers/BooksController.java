@@ -34,6 +34,12 @@ public class BooksController {
         return "books/index";
     }
 
+    @GetMapping("/search")
+    private String getSearchPage(@RequestParam(value = "name", required = false) String name, Model model) {
+        model.addAttribute("books", bookService.getBooksByNameStartingWith(name));
+        return "books/search";
+    }
+
     @GetMapping("/create")
     private String getCreatePage(@ModelAttribute("book") Book book) {
         return "books/create";
