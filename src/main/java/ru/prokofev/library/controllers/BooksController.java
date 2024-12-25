@@ -11,6 +11,7 @@ import ru.prokofev.library.dao.PersonDAO;
 import ru.prokofev.library.models.Book;
 import ru.prokofev.library.models.Person;
 import ru.prokofev.library.services.BookService;
+import ru.prokofev.library.services.PersonService;
 
 import java.util.Optional;
 
@@ -21,12 +22,14 @@ public class BooksController {
     private final BookDAO bookDAO;
     private final PersonDAO personDAO;
     private final BookService bookService;
+    private final PersonService personService;
 
     @Autowired
-    public BooksController(BookDAO bookDAO, PersonDAO personDAO, BookService bookService) {
+    public BooksController(BookDAO bookDAO, PersonDAO personDAO, BookService bookService, PersonService personService) {
         this.bookDAO = bookDAO;
         this.personDAO = personDAO;
         this.bookService = bookService;
+        this.personService = personService;
     }
 
     @GetMapping()
@@ -44,13 +47,13 @@ public class BooksController {
     private String create(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "books/create";
-        bookDAO.createBook(book);
+        bookService.saveBook(book);
         return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")
     private String getEditPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("book", bookDAO.getBook(id));
+        model.addAttribute("book", bookService.getBookById(id));
         return "books/edit";
     }
 
@@ -58,25 +61,25 @@ public class BooksController {
     private String edit(@PathVariable("id") int id, @ModelAttribute("book") @Valid Book book, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "books/edit";
-        bookDAO.updateBook(book);
+        bookService.saveBook(book);
         return "redirect:/books/" + id;
     }
 
     @GetMapping("/{id}")
     private String getBookPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("book", bookDAO.getBook(id));
-        Optional<Person> bookOwner = personDAO.getPersonByBook(id);
+        model.addAttribute("book", bookService.getBookById(id));
+        Optional<Person> bookOwner = personService.getPersonByBookId(id);
         if (bookOwner.isPresent()) {
             model.addAttribute("person", bookOwner.get());
         } else {
-            model.addAttribute("personList", personDAO.getPersonList());
+            model.addAttribute("personList", personService.getPeople());
         }
         return "books/book";
     }
 
     @DeleteMapping("/{id}")
     private String deleteBook(@PathVariable("id") int id) {
-        bookDAO.deleteBook(id);
+        bookService.deleteBookById(id);
         return "redirect:/books";
     }
 }

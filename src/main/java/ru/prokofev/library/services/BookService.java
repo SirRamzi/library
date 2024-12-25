@@ -34,4 +34,16 @@ public class BookService {
             }
         }
     }
+
+    public Book getBookById(int id) {
+        return bookRepository.findById(id).orElse(null);
+    }
+
+    public void saveBook(Book book) {
+        bookRepository.save(book);
+    }
+
+    public void deleteBookById(int id) {
+        bookRepository.deleteById(id);
+    }
 }

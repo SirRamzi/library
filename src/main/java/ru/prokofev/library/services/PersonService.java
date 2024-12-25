@@ -26,6 +26,10 @@ public class PersonService {
         return personRepository.findById(id).orElse(null);
     }
 
+    public Optional<Person> getPersonByBookId(int id) {
+        return personRepository.findByBooksId(id);
+    }
+
     public void savePerson(Person person) {
         personRepository.save(person);
     }
