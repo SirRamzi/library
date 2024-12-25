@@ -35,6 +35,10 @@ public class BookService {
         }
     }
 
+    public List<Book> getBooksByPersonId(int id) {
+        return bookRepository.findByPersonId(id);
+    }
+
     public Book getBookById(int id) {
         return bookRepository.findById(id).orElse(null);
     }
