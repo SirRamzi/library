@@ -15,6 +15,7 @@
     <label for="year">Введите год:</label><input type="text" th:field="*{year}" id="year">
     <div style="color:red" th:if="#{fields.hasError('year')}" th:errors="*{year}"></div>
     <br/>
+    <input type="hidden" th:field="*{person_id}">
     <input type="submit" value="Применить изменения">
 </form>
 </body>
