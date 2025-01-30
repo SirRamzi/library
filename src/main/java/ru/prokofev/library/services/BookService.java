@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.prokofev.library.models.Book;
 import ru.prokofev.library.repositories.BookRepository;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -48,6 +49,15 @@ public class BookService {
     }
 
     public void saveBook(Book book) {
+        Integer personId = book.getPerson_id();
+        Date dateLastCapture = getBookById(book.getId()).getDateLastCapture();
+        if (personId != null && dateLastCapture == null) {
+            book.setDateLastCapture(new Date());
+        } else if (personId == null && dateLastCapture != null) {
+            book.setDateLastCapture(null);
+        } else {
+            book.setDateLastCapture(dateLastCapture);
+        }
         bookRepository.save(book);
     }
 
