@@ -41,6 +41,9 @@ public class Book {
     @JoinColumn(name = "person_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Person person;
 
+    @Transient
+    private boolean isExpired;
+
     public int getId() {
         return id;
     }
@@ -95,5 +98,17 @@ public class Book {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public boolean isExpired() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.DATE, -10);
+        isExpired = dateLastCapture != null && dateLastCapture.before(calendar.getTime());
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
     }
 }
